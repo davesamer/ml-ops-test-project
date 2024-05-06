@@ -1,0 +1,6 @@
+db_data
+minio_data
+mlflow
+config.env
+credentials.json
+docker-compose.yaml
