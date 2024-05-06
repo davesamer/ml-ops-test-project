@@ -16,21 +16,22 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.9' 
+        python-version: '3.9'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r ../../requirements.txt 
+        pip install -r requirements.txt 
 
     - name: Run feature retrieval script
-      run: python ../../code/feature_retrieval.py
+      run: python code/feature_retrieval.py
 
     - name: Run feature validation script
-      run: python ../../code/feature_validation.py
+      run: python code/feature_validation.py
 
     - name: Run model training script
-      run: python ../../code/model_training.py
+      run: python code/model_training.py
 
     - name: Run model validation script
-      run: python ../../code/model_validation.py
+      run: python code/model_validation.py
+
