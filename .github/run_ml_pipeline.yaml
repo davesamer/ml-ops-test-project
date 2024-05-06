@@ -24,13 +24,13 @@ jobs:
         pip install -r ../requirements.txt 
 
     - name: Run feature retrieval script
-      run: python feature_retrieval.py
+      run: python code/feature_retrieval.py
 
     - name: Run feature validation script
-      run: python feature_validation.py
+      run: python code/feature_validation.py
 
     - name: Run model training script
-      run: python model_training.py
+      run: python code/model_training.py
 
     - name: Run model validation script
-      run: python model_validation.py
+      run: python code/model_validation.py
