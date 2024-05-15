@@ -46,7 +46,12 @@
 
 
 # TODO
-- fill scripts with code
+- finish model_training.py and run locally
+- IaC for deploying MLflow on Azure VM / deploy MLflow
+- Setting up Azure Blob Storage and uploading data
+- Update code to read and write data to Azure Blob Storage
+- finish model_validation.py (maybe update tag when model is validated)
 - test deployment with mlflow locally
-- write tests and integrate into pipelines
-- write IaC for Azure deployment
+- write IaC for Azure deployment (batch)
+- write unit/integration tests and integrate into pipelines
+- write IaC for Azure deployment (online)
