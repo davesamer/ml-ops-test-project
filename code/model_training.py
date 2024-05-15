@@ -3,6 +3,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
+from sklearn.metrics import accuracy_score
 import mlflow
 import mlflow.sklearn
 
@@ -11,52 +12,53 @@ if __name__ == "__main__":
 
     X_train = pd.read_csv("data/X_train.csv")
     X_test = pd.read_csv("data/X_test.csv")
-    y_train = pd.read_csv("data/y_train.csv")
-    y_test = pd.read_csv("data/y_test.csv")
+    y_train = pd.read_csv("data/y_train.csv").churn.values
+    y_test = pd.read_csv("data/y_test.csv").churn.values
 
     categorical_features = ['country', 'gender']
     numerical_features = ['credit_score', 'age', 'tenure', 'balance', 'products_number', 'estimated_salary']
 
     categorical_transformer = Pipeline(steps=[
-        ('label_encoder', OneHotEncoder())
+        ('ohe_encoder', OneHotEncoder())
     ])
 
     numerical_transformer = Pipeline(steps=[
         ('scaler', StandardScaler())
     ])
 
-    # Combine preprocessing steps into a ColumnTransformer
     preprocessor = ColumnTransformer(
         transformers=[
             ('cat', categorical_transformer, categorical_features),
             ('num', numerical_transformer, numerical_features)
         ])
 
-    # Model training pipeline
-    model_pipeline = Pipeline(steps=[
-        ('preprocessor', preprocessor),
-        ('classifier', RandomForestClassifier(n_estimators=100, random_state=42))
-    ])
 
-    # Train the model
-    model_pipeline.fit(X_train, y_train)
+    preprocessor.fit(X_train)
+    X_train_trans = preprocessor.transform(X_train)
+    X_test_trans = preprocessor.transform(X_test)
+    
+    n_estimators = 100
+    random_state = 42
+    rf = RandomForestClassifier(n_estimators=n_estimators, random_state=random_state, max_depth=10)
+    rf.fit(X_train_trans, y_train)
 
-    # Evaluate model
-    train_accuracy = model_pipeline.score(X_train, y_train)
-    test_accuracy = model_pipeline.score(X_test, y_test)
+    y_train_pred = rf.predict(X_train_trans)
+    y_test_pred = rf.predict(X_test_trans)
 
-    # Log parameters and metrics with MLflow
+    train_accuracy = accuracy_score(y_train, y_train_pred)
+    test_accuracy = accuracy_score(y_test, y_test_pred)
+
+    print(test_accuracy)
+
+
     with mlflow.start_run() as run:
-        # Log parameters
-        mlflow.log_param("n_estimators", 100)
+
+        mlflow.log_param("random_state_rf", n_estimators)
+        mlflow.log_param("n_estimators", random_state)
         
-        # Log metrics
         mlflow.log_metric("train_accuracy", train_accuracy)
         mlflow.log_metric("test_accuracy", test_accuracy)
         
-        # Log model
-        mlflow.sklearn.log_model(model_pipeline, "random_forest_model")
-        
-        # Add tag to the run
-        mlflow.set_tag("validation_status", "not validated")
+        mlflow.sklearn.log_model(rf, "random_forest_model")
+
 

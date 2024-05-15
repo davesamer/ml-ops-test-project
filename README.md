@@ -4,13 +4,13 @@
 
 ## Setting up MLFlow 
 
-1) Run ```docker-compose --env-file config.env up -d --build```
+1) Run ```sudo docker compose --env-file config.env up -d --build```
 2) Access minio under localhost:9011
 3) Create access key
 4) Create bucket called mlflow
 5) docker compose down
 6) Update config.env file
-7) Run ```docker-compose --env-file config.env up -d --build```
+7) Run ```sudo docker compose --env-file config.env up -d --build```
 
 
 ## MLOps Workflow
