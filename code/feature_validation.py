@@ -2,15 +2,10 @@ import pandas as pd
 import pytest
 
 
-#X_train = pd.read_csv("data/X_train.csv")
-#X_test = pd.read_csv("data/X_test.csv")
-#y_train = pd.read_csv("data/y_train.csv")
-#y_test = pd.read_csv("data/y_test.csv") 
-
-X_train = pd.read_csv("../data/X_train.csv")
-X_test = pd.read_csv("../data/X_test.csv")
-y_train = pd.read_csv("../data/y_train.csv")
-y_test = pd.read_csv("../data/y_test.csv") 
+X_train = pd.read_csv("data/X_train.csv")
+X_test = pd.read_csv("data/X_test.csv")
+y_train = pd.read_csv("data/y_train.csv")
+y_test = pd.read_csv("data/y_test.csv") 
 
 
 def validate_credit_score_range(df):
