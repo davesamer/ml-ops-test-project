@@ -3,7 +3,6 @@ minio_data
 mlflow
 config.env
 credentials.json
-docker-compose.yaml
-data 
+docker-compose.yaml 
 .pytest_cache
 __pycache__

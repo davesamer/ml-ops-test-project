@@ -27,7 +27,7 @@ jobs:
       run: python code/feature_retrieval.py
 
     - name: Run feature validation script
-      run: python code/feature_validation.py
+      run: pytest code/feature_validation.py
 
     - name: Run model training script
       run: python code/model_training.py
