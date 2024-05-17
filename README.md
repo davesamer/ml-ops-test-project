@@ -46,12 +46,11 @@
 
 
 # TODO
-- finish model_training.py and run locally
-- IaC for deploying MLflow on Azure VM / deploy MLflow
-- Setting up Azure Blob Storage and uploading data
-- Update code to read and write data to Azure Blob Storage
 - finish model_validation.py (maybe update tag when model is validated)
-- test deployment with mlflow locally
-- write IaC for Azure deployment (batch)
+- Test deployment with mlflow locally
+- IAC:
+    - Blob Storage Azure for training data
+    - Azure VM for model deployment
+    - Azure VM for MLFlow Deployment
+    - https://developer.hashicorp.com/terraform/tutorials/azure-get-started
 - write unit/integration tests and integrate into pipelines
-- write IaC for Azure deployment (online)

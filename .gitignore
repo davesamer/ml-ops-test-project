@@ -7,3 +7,4 @@ docker-compose.yaml
 .pytest_cache
 __pycache__
 mlruns
+http

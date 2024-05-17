@@ -51,6 +51,10 @@ if __name__ == "__main__":
     print(test_accuracy)
 
 
+    remote_server_uri = "http://localhost:5000"
+    mlflow.set_tracking_uri(remote_server_uri)
+    mlflow.set_experiment("/ml-ops-test-experiment")
+
     with mlflow.start_run() as run:
 
         mlflow.log_param("random_state_rf", n_estimators)
@@ -59,6 +63,6 @@ if __name__ == "__main__":
         mlflow.log_metric("train_accuracy", train_accuracy)
         mlflow.log_metric("test_accuracy", test_accuracy)
         
-        mlflow.sklearn.log_model(rf, "random_forest_model")
+        mlflow.sklearn.log_model(rf, "churn_prediction_model")
 
 
