@@ -63,6 +63,11 @@ if __name__ == "__main__":
         mlflow.log_metric("train_accuracy", train_accuracy)
         mlflow.log_metric("test_accuracy", test_accuracy)
         
-        mlflow.sklearn.log_model(rf, "churn_prediction_model")
+        
+        mlflow.sklearn.log_model(
+            sk_model=rf,
+            artifact_path="churn-prediction-model",
+            registered_model_name="churn-prediction-model",
+    )
 
 

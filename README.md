@@ -15,6 +15,10 @@
 
 ## MLOps Workflow
 
+### Model Lifecycle
+model_validation_status” and set the value to “PENDING” as the tests execute, and then update it to “PASSED” or “FAILED” when the pipeline is complete.
+
+
 ### Overview Scripts
 - feature_retrieval.py: accessing and preprocessing the data needed for model training & predictions
 - feature_validation.py: running tests to ensure that input data is valid
