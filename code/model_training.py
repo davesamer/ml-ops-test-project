@@ -1,3 +1,5 @@
+import os
+import tempfile
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -6,6 +8,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.metrics import accuracy_score
 import mlflow
 import mlflow.sklearn
+import joblib
 
 
 if __name__ == "__main__":
@@ -32,7 +35,6 @@ if __name__ == "__main__":
             ('num', numerical_transformer, numerical_features)
         ])
 
-
     preprocessor.fit(X_train)
     X_train_trans = preprocessor.transform(X_train)
     X_test_trans = preprocessor.transform(X_test)
@@ -50,7 +52,6 @@ if __name__ == "__main__":
 
     print(test_accuracy)
 
-
     remote_server_uri = "http://localhost:5000"
     mlflow.set_tracking_uri(remote_server_uri)
     mlflow.set_experiment("/ml-ops-test-experiment")
@@ -62,12 +63,15 @@ if __name__ == "__main__":
         
         mlflow.log_metric("train_accuracy", train_accuracy)
         mlflow.log_metric("test_accuracy", test_accuracy)
-        
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            joblib_file = os.path.join(tmpdir, "preprocessor.pkl")
+            joblib.dump(preprocessor, joblib_file)
+            mlflow.log_artifact(joblib_file)
         
         mlflow.sklearn.log_model(
             sk_model=rf,
             artifact_path="churn-prediction-model",
-            registered_model_name="churn-prediction-model",
-    )
+            registered_model_name="churn-prediction-model")
 
 

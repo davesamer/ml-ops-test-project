@@ -16,7 +16,11 @@
 ## MLOps Workflow
 
 ### Model Lifecycle
-model_validation_status” and set the value to “PENDING” as the tests execute, and then update it to “PASSED” or “FAILED” when the pipeline is complete.
+
+- When model training is finished, register model
+- Model is loaded in validation. If model successfully passes all checks asign "Challenger" alias. Add tag model_validation_status” and set the value to “PENDING” as the tests execute, and then update it to “PASSED” or “FAILED” when the pipeline is complete.
+- Current production model has alias "Champion". In Deployment pipeline "Challenger" model is compared to "Champion" model. (Either offline on held-out set or online, e.g. A/B testing). If currently no ML model is in production compare against baseline 
+- After comparison - if challenger is better than champion - set chllenger to champion and deploy to production
 
 
 ### Overview Scripts
@@ -50,7 +54,6 @@ model_validation_status” and set the value to “PENDING” as the tests execu
 
 
 # TODO
-- finish model_validation.py (maybe update tag when model is validated)
 - Test deployment with mlflow locally
 - IAC:
     - Blob Storage Azure for training data
