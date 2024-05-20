@@ -15,7 +15,9 @@ def get_latest_run(client: MlflowClient, experiment_name: str) -> Run:
 
 def get_run_id_from_model_alias(client: MlflowClient, model_name: str, model_alias: str) -> str:
     '''Get the run ID associated with a specific model alias'''
-    for mv in client.search_model_versions(f"name='{model_name}'"):
-        if model_alias in mv.aliases:
-            return mv.run_id
+    model_versions = client.search_model_versions(f"name='{model_name}'")
+    for version in model_versions:
+        detailed_version = client.get_model_version(name=model_name, version=version.version)        
+        if model_alias in detailed_version.aliases:
+            return detailed_version.run_id
     return None  

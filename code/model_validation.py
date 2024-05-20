@@ -12,6 +12,7 @@ def validate_model(client: object, experiment_name: str, model_name: str):
     '''set alias of model to challenger and validation_status to passed if tests are passed. 
     Otherwise set validation status to failed. If tests fail and challenger alias has already been assigned, alias is deleted'''
 
+    # TODO instead of validating only model from most recent run, validate all unvalidated models
     latest_run = get_latest_run(client, experiment_name)
     latest_run_id = latest_run.info.run_id
     test_accuracy = latest_run.data.metrics.get("test_accuracy")

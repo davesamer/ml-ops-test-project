@@ -13,11 +13,7 @@ if __name__ == "__main__":
 
     model_name = "churn-prediction-model"
     model_alias = "Challenger"
-
     run_id = get_run_id_from_model_alias(mlflow_client, model_name, model_alias)
-    print(run_id)
-    # TODO somehow the correct run ID is not found
-    run_id = "aa54887ec8164c07a3b8a7d9e8d52054"
 
     if run_id:
         path_to_preprocessor = mlflow.artifacts.download_artifacts(run_id=run_id, artifact_path="preprocessor.pkl", dst_path="pipeline")
