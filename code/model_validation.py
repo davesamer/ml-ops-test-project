@@ -29,6 +29,7 @@ def validate_model(client: object, experiment_name: str, model_name: str):
         test_against_baseline(test_accuracy)
         client.set_model_version_tag(model_name, model_version, "validation_status", "passed")
         client.set_registered_model_alias(model_name, "Challenger", model_version)
+        client.set_registered_model_tag()
     except ValueError:
         client.set_model_version_tag(model_name, model_version, "validation_status", "failed")
         client.delete_registered_model_alias(model_name, "Challenger")

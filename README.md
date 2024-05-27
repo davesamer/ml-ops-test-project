@@ -53,7 +53,9 @@
 - before code review code is automatically tested; pull request fails if tests fail. 
 
 # TODO
-- Write model_comparison (offline on hold out dataset)
-- Test deployment with mlflow locally / build docker image
 - IaC Azure VM for model deployment & Blob Storage for data
+- Test deployment with mlflow locally / build docker image
+- Pipeline for model deployment (batch or online)
+
+- Write model_comparison (offline on hold out dataset)
 - write unit/integration tests and integrate into pipelines
