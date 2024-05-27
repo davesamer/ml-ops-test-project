@@ -52,12 +52,8 @@
 - to merge branches into master pull request must be made which triggers code review. 
 - before code review code is automatically tested; pull request fails if tests fail. 
 
-
 # TODO
-- Test deployment with mlflow locally
-- IAC:
-    - Blob Storage Azure for training data
-    - Azure VM for model deployment
-    - Azure VM for MLFlow Deployment
-    - https://developer.hashicorp.com/terraform/tutorials/azure-get-started
+- Write model_comparison (offline on hold out dataset)
+- Test deployment with mlflow locally / build docker image
+- IaC Azure VM for model deployment & Blob Storage for data
 - write unit/integration tests and integrate into pipelines

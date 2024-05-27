@@ -60,17 +60,18 @@ validation_functions_labels = [
 ]
 
 
-@pytest.mark.parametrize("dataset", [X_train, X_test])
 def test_features(dataset):
     for func in validation_functions_features:
         func(dataset)
 
-@pytest.mark.parametrize("dataset", [y_train, y_test])
 def test_labels(dataset):
     for func in validation_functions_labels:
         func(dataset)
 
 if __name__ == "__main__":
-    pytest.main()
+    test_features(X_train)
+    test_features(X_test)
+    test_labels(y_train)
+    test_labels(y_test)
 
 

@@ -20,4 +20,3 @@ def get_run_id_from_model_alias(client: MlflowClient, model_name: str, model_ali
         detailed_version = client.get_model_version(name=model_name, version=version.version)        
         if model_alias in detailed_version.aliases:
             return detailed_version.run_id
-    return None  

@@ -1,6 +1,7 @@
 import os
 import tempfile
 import pandas as pd
+from dotenv import load_dotenv
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.pipeline import Pipeline
@@ -9,6 +10,12 @@ from sklearn.metrics import accuracy_score
 import mlflow
 import mlflow.sklearn
 import joblib
+
+
+load_dotenv("config.env")
+MLFLOW_ADDRESS = os.environ.get("MLFLOW_ADDRESS")
+MLFLOW_EXPERIMENT_NAME = os.environ.get("MLFLOW_EXPERIMENT_NAME")
+MLFLOW_MODEL_NAME = os.environ.get("MLFLOW_MODEL_NAME")
 
 
 if __name__ == "__main__":
@@ -52,9 +59,8 @@ if __name__ == "__main__":
 
     print(test_accuracy)
 
-    remote_server_uri = "http://localhost:5000"
-    mlflow.set_tracking_uri(remote_server_uri)
-    mlflow.set_experiment("/ml-ops-test-experiment")
+    mlflow.set_tracking_uri(MLFLOW_ADDRESS)
+    mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
 
     with mlflow.start_run() as run:
 
@@ -71,7 +77,7 @@ if __name__ == "__main__":
         
         mlflow.sklearn.log_model(
             sk_model=rf,
-            artifact_path="churn-prediction-model",
-            registered_model_name="churn-prediction-model")
+            artifact_path=MLFLOW_MODEL_NAME,
+            registered_model_name=MLFLOW_MODEL_NAME)
 
 
