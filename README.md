@@ -53,9 +53,11 @@
 - before code review code is automatically tested; pull request fails if tests fail. 
 
 # TODO
-- IaC Azure VM for model deployment & Blob Storage for data
-- Test deployment with mlflow locally / build docker image
-- Pipeline for model deployment (batch or online)
+- Next goal: Serving "champion model" on azure infrastructure
+    - IaC Azure VM for model deployment & Blob Storage for data
+    - Test deployment with mlflow locally / build docker image
+    - Pipeline for model deployment (batch or online)
+        - model comparison --> using best performing model and set it to champion (offline on hold out dataset)
 
-- Write model_comparison (offline on hold out dataset)
 - write unit/integration tests and integrate into pipelines
+
