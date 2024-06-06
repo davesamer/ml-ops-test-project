@@ -61,3 +61,15 @@
 
 - write unit/integration tests and integrate into pipelines
 
+# Infrastructure
+- Azure Blob Storage (to store training data)
+- Azure Container Registry
+- Resource Group
+- VPN & Subnetwork
+- IP Address
+- Security Groups
+- Network Interface & Network Interface Security Group association
+- VM (with cloud init file to run docker image)
+
+# TODO
+- 

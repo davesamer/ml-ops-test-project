@@ -1,3 +1,4 @@
+import pandas as pd
 from mlflow import MlflowClient
 from mlflow.entities import Run
 
@@ -20,3 +21,11 @@ def get_run_id_from_model_alias(client: MlflowClient, model_name: str, model_ali
         detailed_version = client.get_model_version(name=model_name, version=version.version)        
         if model_alias in detailed_version.aliases:
             return detailed_version.run_id
+
+def load_data():
+    '''load train and eval data'''
+    X_train = pd.read_csv("data/X_train.csv")
+    X_test = pd.read_csv("data/X_test.csv")
+    y_train = pd.read_csv("data/y_train.csv").churn.values
+    y_test = pd.read_csv("data/y_test.csv").churn.values
+    return X_train, X_test, y_train, y_test

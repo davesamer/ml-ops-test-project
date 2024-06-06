@@ -1,8 +1,4 @@
-db_data
-minio_data
-mlflow
-credentials.json
-docker-compose.yaml 
 .pytest_cache
 __pycache__
-pipeline
+*terraform*
+data

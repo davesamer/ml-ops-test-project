@@ -1,16 +1,14 @@
 import os
 import tempfile
-import pandas as pd
 from dotenv import load_dotenv
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score
 import mlflow
-import mlflow.sklearn
-import joblib
-
+import mlflow.pyfunc
+from utils import load_data
 
 load_dotenv("config.env")
 MLFLOW_ADDRESS = os.environ.get("MLFLOW_ADDRESS")
@@ -18,12 +16,20 @@ MLFLOW_EXPERIMENT_NAME = os.environ.get("MLFLOW_EXPERIMENT_NAME")
 MLFLOW_MODEL_NAME = os.environ.get("MLFLOW_MODEL_NAME")
 
 
-if __name__ == "__main__":
+class ChurnPredictionModel(mlflow.pyfunc.PythonModel):
+    def __init__(self, preprocessor, model):
+        self.preprocessor = preprocessor
+        self.model = model
 
-    X_train = pd.read_csv("data/X_train.csv")
-    X_test = pd.read_csv("data/X_test.csv")
-    y_train = pd.read_csv("data/y_train.csv").churn.values
-    y_test = pd.read_csv("data/y_test.csv").churn.values
+    def predict(self, context, model_input):
+        processed_data = self.preprocessor.transform(model_input)
+        predictions = self.model.predict(processed_data)
+        return predictions
+
+
+def train_model(n_estimators: int, random_state: int):
+    
+    X_train, X_test, y_train, y_test = load_data()
 
     categorical_features = ['country', 'gender']
     numerical_features = ['credit_score', 'age', 'tenure', 'balance', 'products_number', 'estimated_salary']
@@ -46,8 +52,6 @@ if __name__ == "__main__":
     X_train_trans = preprocessor.transform(X_train)
     X_test_trans = preprocessor.transform(X_test)
     
-    n_estimators = 100
-    random_state = 42
     rf = RandomForestClassifier(n_estimators=n_estimators, random_state=random_state, max_depth=10)
     rf.fit(X_train_trans, y_train)
 
@@ -57,27 +61,42 @@ if __name__ == "__main__":
     train_accuracy = accuracy_score(y_train, y_train_pred)
     test_accuracy = accuracy_score(y_test, y_test_pred)
 
-    print(test_accuracy)
+    print("Test Accuracy:", test_accuracy)
+    print("Precision", precision_score(y_test, y_test_pred))
+    print("Recall", recall_score(y_test, y_test_pred))
 
     mlflow.set_tracking_uri(MLFLOW_ADDRESS)
     mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
 
     with mlflow.start_run() as run:
-
-        mlflow.log_param("random_state_rf", n_estimators)
-        mlflow.log_param("n_estimators", random_state)
+        mlflow.log_param("random_state_rf", random_state)
+        mlflow.log_param("n_estimators", n_estimators)
         
         mlflow.log_metric("train_accuracy", train_accuracy)
         mlflow.log_metric("test_accuracy", test_accuracy)
 
+        # Save the custom model
+        custom_model = ChurnPredictionModel(preprocessor, rf)
         with tempfile.TemporaryDirectory() as tmpdir:
-            joblib_file = os.path.join(tmpdir, "preprocessor.pkl")
-            joblib.dump(preprocessor, joblib_file)
-            mlflow.log_artifact(joblib_file)
-        
-        mlflow.sklearn.log_model(
-            sk_model=rf,
-            artifact_path=MLFLOW_MODEL_NAME,
-            registered_model_name=MLFLOW_MODEL_NAME)
+            model_path = os.path.join(tmpdir, "custom_churn_model")
+            mlflow.pyfunc.save_model(
+                path=model_path,
+                python_model=custom_model
+            )
+            mlflow.pyfunc.log_model(
+                artifact_path=MLFLOW_MODEL_NAME,
+                python_model=custom_model,
+                registered_model_name=MLFLOW_MODEL_NAME
+            )
+
+    print("Custom model logged successfully.")
+
+
+
+if __name__ == "__main__":
+    n_estimators = 100
+    random_state = 42
+    train_model(n_estimators, random_state)
+
 
 

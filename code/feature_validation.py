@@ -1,11 +1,4 @@
-import pandas as pd
-import pytest
-
-
-X_train = pd.read_csv("data/X_train.csv")
-X_test = pd.read_csv("data/X_test.csv")
-y_train = pd.read_csv("data/y_train.csv")
-y_test = pd.read_csv("data/y_test.csv") 
+from utils import load_data
 
 
 def validate_credit_score_range(df):
@@ -69,6 +62,7 @@ def test_labels(dataset):
         func(dataset)
 
 if __name__ == "__main__":
+    X_train, X_test, y_train, y_test = load_data()
     test_features(X_train)
     test_features(X_test)
     test_labels(y_train)

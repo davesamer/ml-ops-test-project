@@ -35,6 +35,5 @@ def validate_model(client: object, experiment_name: str, model_name: str):
 
 
 if __name__ == "__main__":
-
     mlflow_client = MlflowClient(tracking_uri=MLFLOW_ADDRESS)
     validate_model(mlflow_client, MLFLOW_EXPERIMENT_NAME, MLFLOW_MODEL_NAME)
