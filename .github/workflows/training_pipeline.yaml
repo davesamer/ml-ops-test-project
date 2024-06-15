@@ -1,9 +1,7 @@
 name: Model Training Process
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch: # Enables manual triggering
 
 jobs:
   model_training:
