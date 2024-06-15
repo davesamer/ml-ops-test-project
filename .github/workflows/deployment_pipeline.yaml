@@ -48,5 +48,12 @@ jobs:
           sudo docker pull davesamer/churn_prediction_model_online:latest
           sudo docker stop mlflow_container || true
           sudo docker rm mlflow_container || true
-          sudo docker run -d --name mlflow_container -p 5000:5000 davesamer/churn_prediction_model_online:latest
+          sudo docker run -d --name mlflow_container -p 8000:5000 davesamer/churn_prediction_model_online:latest
         EOF
+        
+    - name: Install dependencies for smoke test
+      run: pip install requests
+
+    - name: Run smoke test
+      run: |
+        python smoke_test.py http://${{ secrets.AZURE_VM_IP }}:8000
