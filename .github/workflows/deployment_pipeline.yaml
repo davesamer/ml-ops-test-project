@@ -56,4 +56,4 @@ jobs:
 
     - name: Run smoke test
       run: |
-        python smoke_test.py http://${{ secrets.AZURE_VM_IP }}:8000
+        python code/smoke_test.py http://${{ secrets.AZURE_VM_IP }}:8000
